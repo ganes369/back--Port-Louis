@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "CommonJS",
+    "outDir": "./dist",
+
+    "strict": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true, // Para fazer uma conversão do import para require
+    "allowJs": true // Para arquivos de configuraçao em javascript ao invés de json
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "example",
+    "rollup.config.js",
+    "**/*.test.ts",
+    "jest.startup.ts"
+  ]
+}
