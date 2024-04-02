@@ -27,7 +27,7 @@ interface IInvoicePendingItems {
 interface IInvoiceFindAll {
   invoice: string;
   orders: number;
-  items: any[];
+  items: Array<Partial<IOrderMapper> & { quantityInvoice?: number }>;
 }
 
 interface IInvoiceMethods {
