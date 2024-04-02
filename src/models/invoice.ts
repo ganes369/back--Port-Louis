@@ -24,6 +24,12 @@ interface IInvoicePendingItems {
   items: Array<Partial<IOrderMapper> & { missing?: number }>;
 }
 
+interface IInvoiceFindAll {
+  invoice: string;
+  orders: number;
+  items: any[];
+}
+
 interface IInvoiceMethods {
   findAll(): any[];
   get<T>(): T;
@@ -116,7 +122,7 @@ class Invoices implements IInvoiceMethods {
     );
   }
 
-  findAll(): any[] {
+  findAll(): IInvoiceFindAll[] {
     const group = Invoices.groupObjectsByKey(this.invoice);
 
     return Object.entries(group).map(([invoice, items]) => ({
@@ -156,18 +162,21 @@ class Invoices implements IInvoiceMethods {
 
       const itemsPendingQtde = group[invoice]
         .map((i) => {
-          const findItem = getOrderItems.find(
+          const matchedItems = getOrderItems.filter(
             ({ key, numeroItem, quantidadeProduto }) =>
               key === i.idPedido &&
               numeroItem === i.numeroItem &&
               quantidadeProduto > i.quantidadeProduto
           );
-          return (
-            findItem && {
+
+          if (matchedItems.length > 0) {
+            const findItem = matchedItems[0];
+            return {
               ...findItem,
               missing: findItem.quantidadeProduto - i.quantidadeProduto,
-            }
-          );
+            };
+          }
+          return;
         })
         .filter(Boolean) as Array<IOrderMapper> & { missing?: number };
 
