@@ -30,7 +30,7 @@ interface IInvoiceMethods {
   findAllOrderPending(): IInvoicePendingItems[];
 }
 class Invoices implements IInvoiceMethods {
-  readonly invoice: IInvoiceMapper[];
+  private readonly invoice: IInvoiceMapper[];
   private readonly order?: IOrderMapper[];
 
   constructor(invoice: IInvoices[], order?: IOrderMapper[]) {

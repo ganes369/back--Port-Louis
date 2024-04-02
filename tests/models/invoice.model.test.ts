@@ -47,6 +47,41 @@ describe("Invoice model", () => {
     ]);
   });
 
+  it("deverá retornar uma lista de notas seus pedidos pendentes", async () => {
+    const invoice = new Invoices(inputFileInvoice, [
+      {
+        codigo: "A12",
+        key: "P1",
+        numeroItem: 1,
+        quantidadeProduto: 3,
+        valorUnitario: "10,00",
+      },
+    ]);
+
+    expect(invoice).toBeInstanceOf(Invoices);
+    expect(invoice.findAllOrderPending()).toStrictEqual([
+      {
+        invoice: "N1",
+        pendingBalance: 20,
+        totalBalance: 30,
+        items: [
+          {
+            numeroItem: 1,
+            missing: 2,
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("deverá retornar uma lista de notas seus pedidos pendentes vazia caso não tenha itens pendentes", async () => {
+    const orders = new Orders(inputFileOrder).get<IOrderMapper[]>();
+    const invoice = new Invoices(inputFileInvoice, orders);
+
+    expect(invoice).toBeInstanceOf(Invoices);
+    expect(invoice.findAllOrderPending()).toStrictEqual([]);
+  });
+
   it("deverá retornar erro caso algum tipo errado", async () => {
     const orders = new Orders(inputFileOrder).get<IOrderMapper[]>();
 
